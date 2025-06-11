@@ -5,7 +5,7 @@ Plain js pacman made by AI
 
 ## First version
 
-First versoin made in about an hour with AI. See the full [conversation](ai_initial.md).
+First versoin made in about an hour with AI. See the full [conversation](ai_initial.md). The AI made pretty large [code](controller.js).
 
 Possible improvements: see [tasks](tasks.md)
 
