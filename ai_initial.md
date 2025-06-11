@@ -34,7 +34,7 @@ Some things to improve:
 
 ---------------------------------------------------------------
 
-That is better. Make the pacman and just a little slower moving so that it is easier to change direction using the keyboard. Currently it's a little hard to press the button soon enough. Also make the ghosts move at the same speed as the pacman.
+That is better. Make the pacman and just a little slower moving so that it is easier to change direction using the keyboard. Currently it's a little hard to press the button fast enough. Also make the ghosts move at the same speed as the pacman.
 
 ---------------------------------------------------------------
 
