@@ -1,17 +1,22 @@
 # Pacman
 
-Plain js pacman made by AI, first versoin made in about an hour with AI. See the full [conversation](ai_initial.md).
+Plain js pacman made by AI
 
 
-## Controls
+## First version
+
+First versoin made in about an hour with AI. See the full [conversation](ai_initial.md).
+
+Possible improvements: see [tasks](tasks.md)
+
+
+<img src="misc/img.jpg" width="200">
+
+
+Controls
 
 - Arrow keys and space
 - or onscrean btns for use on smartpones
-
-
-## Possible improvements
-
-see [tasks](tasks.md)
 
 
 LICENSE
