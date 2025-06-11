@@ -47,3 +47,11 @@ For playing on smartphones we need to add some keys below the score that are use
 ---------------------------------------------------------------
 
 [AI agent runs]
+
+---------------------------------------------------------------
+
+I have some problems starting the game on smartphones. Pressign the start button works sometimes. Also the direction buttons don't react well.
+
+---------------------------------------------------------------
+
+[AI agent runs]

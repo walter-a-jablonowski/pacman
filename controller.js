@@ -490,10 +490,16 @@ document.addEventListener('DOMContentLoaded', () => {
   let touchStartY = 0;
   
   document.addEventListener('touchstart', (event) => {
+    // Check if the touch is on a control button
+    if (event.target.classList.contains('control-btn')) {
+      // Let the button's own event handler handle it
+      return;
+    }
+    
     touchStartX = event.touches[0].clientX;
     touchStartY = event.touches[0].clientY;
     
-    // Start game if waiting or game over
+    // Start game if waiting or game over - only if not touching a control button
     if (gameState === 'waiting' || gameState === 'gameover' || gameState === 'won')
     {
       startGame();
@@ -601,41 +607,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const rightButton = document.getElementById('btn-right');
     const startButton = document.getElementById('btn-start');
     
-    // Add event listeners for direction buttons
-    upButton.addEventListener('click', () => {
-      pacman.nextDirection = 'up';
-    });
+    // Function to handle direction button press
+    const handleDirectionButton = (direction) => {
+      pacman.nextDirection = direction;
+    };
     
-    downButton.addEventListener('click', () => {
-      pacman.nextDirection = 'down';
-    });
-    
-    leftButton.addEventListener('click', () => {
-      pacman.nextDirection = 'left';
-    });
-    
-    rightButton.addEventListener('click', () => {
-      pacman.nextDirection = 'right';
-    });
-    
-    // Add event listener for start button
-    startButton.addEventListener('click', () => {
+    // Function to handle start button press
+    const handleStartButton = () => {
       if (gameState === 'waiting' || gameState === 'gameover' || gameState === 'won')
       {
         startGame();
       }
-    });
+    };
+    
+    // Add both click and touch event listeners for better responsiveness
+    // Up button
+    upButton.addEventListener('mousedown', () => handleDirectionButton('up'));
+    upButton.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleDirectionButton('up');
+    }, { passive: false });
+    
+    // Down button
+    downButton.addEventListener('mousedown', () => handleDirectionButton('down'));
+    downButton.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleDirectionButton('down');
+    }, { passive: false });
+    
+    // Left button
+    leftButton.addEventListener('mousedown', () => handleDirectionButton('left'));
+    leftButton.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleDirectionButton('left');
+    }, { passive: false });
+    
+    // Right button
+    rightButton.addEventListener('mousedown', () => handleDirectionButton('right'));
+    rightButton.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleDirectionButton('right');
+    }, { passive: false });
+    
+    // Start button - add multiple event types for better reliability
+    startButton.addEventListener('mousedown', handleStartButton);
+    startButton.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      handleStartButton();
+    }, { passive: false });
+    startButton.addEventListener('click', handleStartButton);
     
     // Prevent default touch behavior to avoid scrolling while playing
     const controlButtons = document.querySelectorAll('.control-btn');
     controlButtons.forEach(button => {
-      button.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-      }, { passive: false });
-      
-      button.addEventListener('touchend', (e) => {
-        e.preventDefault();
-      }, { passive: false });
+      // Prevent all default touch events
+      ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(eventType => {
+        button.addEventListener(eventType, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        }, { passive: false });
+      });
     });
   }
   
