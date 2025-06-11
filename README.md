@@ -9,6 +9,11 @@ Plain js pacman made by AI, first versoin made in about an hour with AI. See the
 - or onscrean btns for use on smartpones
 
 
+## Possible improvements
+
+see [tasks](tasks.md)
+
+
 LICENSE
 ----------------------------------------------------------
 
