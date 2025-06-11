@@ -8,3 +8,4 @@ Possible improvements
   - try on device
   - compatible with multiple screen sizes
 - [ ] Maybe improve btn layout
+- [ ] Maybe ghost catches pacman detection needs to be improved
