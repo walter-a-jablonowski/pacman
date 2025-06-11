@@ -1,0 +1,15 @@
+
+Make a pacman as a plain javascript application that I can play in the browser and that has
+
+- the pacman
+- maze
+- little green points that the pacman can eat
+- ghosts that hunt the pacman
+- a score under the maze
+- and an overlay "game over" or "won" message
+
+First we see an overlay message "Press space to start". The pacman should be controlled using the arrow keys and the ghosts should have a simple algorithm that makes them change direction.
+
+Ideally we also can play it on smartphones (size of maze).
+
+Indent all codes with 2 spaces and put the { on the next line. Put the js code in controller.js and styles in styles.css. Add a hard coded timestamp like ?v=202506111002.

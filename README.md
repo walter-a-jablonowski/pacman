@@ -1,2 +1,3 @@
-# pacman
+# Pacman
+
 Plain js pacman made by AI
