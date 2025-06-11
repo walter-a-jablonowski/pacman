@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const CELL_SIZE = 20;
   const BOARD_WIDTH = 19;
   const BOARD_HEIGHT = 22;
-  const FPS = 10;
+  const FPS = 7;  // Reduced from 10 to 7 for slower movement
   const PACMAN_SIZE = CELL_SIZE * 1.2;
   const GHOST_SIZE = CELL_SIZE * 1.2;
   
@@ -302,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const ghost of ghosts)
     {
       // Decide if ghost should change direction
-      if (Math.random() < 0.3)
+      if (Math.random() < 0.2)  // Reduced from 0.3 to 0.2 for less random direction changes
       {
         // Get possible directions
         const possibleDirections = [];
@@ -436,6 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Handle keyboard input
   document.addEventListener('keydown', (event) => {
+    // Store the previous direction to allow for buffered input
+    const prevDirection = pacman.nextDirection;
     // Handle arrow keys
     switch (event.key)
     {
