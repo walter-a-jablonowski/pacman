@@ -39,3 +39,11 @@ That is better. Make the pacman and just a little slower moving so that it is ea
 ---------------------------------------------------------------
 
 [AI agent runs]
+
+---------------------------------------------------------------
+
+For playing on smartphones we need to add some keys below the score that are used to control the pacman. Also add a key to replace the space bar. On PC just use the keyboard controls as currently (but keep the controls visible).
+
+---------------------------------------------------------------
+
+[AI agent runs]

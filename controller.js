@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize the game
   function initGame()
   {
+    // Initialize control buttons
+    initControlButtons();
     // Set board size
     gameBoardElement.style.width = `${CELL_SIZE * BOARD_WIDTH}px`;
     gameBoardElement.style.height = `${CELL_SIZE * BOARD_HEIGHT}px`;
@@ -402,6 +404,21 @@ document.addEventListener('DOMContentLoaded', () => {
   {
     overlayContentElement.innerHTML = message;
     overlayElement.style.display = 'flex';
+    
+    // Update start button text based on game state
+    const startButton = document.getElementById('btn-start');
+    if (gameState === 'waiting')
+    {
+      startButton.textContent = 'Start';
+    }
+    else if (gameState === 'gameover')
+    {
+      startButton.textContent = 'Retry';
+    }
+    else if (gameState === 'won')
+    {
+      startButton.textContent = 'Play Again';
+    }
   }
   
   // Hide overlay
@@ -572,6 +589,54 @@ document.addEventListener('DOMContentLoaded', () => {
     
     pacman.element.appendChild(mouth);
     pacman.mouthElement = mouth;
+  }
+  
+  // Initialize control buttons
+  function initControlButtons()
+  {
+    // Get control buttons
+    const upButton = document.getElementById('btn-up');
+    const downButton = document.getElementById('btn-down');
+    const leftButton = document.getElementById('btn-left');
+    const rightButton = document.getElementById('btn-right');
+    const startButton = document.getElementById('btn-start');
+    
+    // Add event listeners for direction buttons
+    upButton.addEventListener('click', () => {
+      pacman.nextDirection = 'up';
+    });
+    
+    downButton.addEventListener('click', () => {
+      pacman.nextDirection = 'down';
+    });
+    
+    leftButton.addEventListener('click', () => {
+      pacman.nextDirection = 'left';
+    });
+    
+    rightButton.addEventListener('click', () => {
+      pacman.nextDirection = 'right';
+    });
+    
+    // Add event listener for start button
+    startButton.addEventListener('click', () => {
+      if (gameState === 'waiting' || gameState === 'gameover' || gameState === 'won')
+      {
+        startGame();
+      }
+    });
+    
+    // Prevent default touch behavior to avoid scrolling while playing
+    const controlButtons = document.querySelectorAll('.control-btn');
+    controlButtons.forEach(button => {
+      button.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+      }, { passive: false });
+      
+      button.addEventListener('touchend', (e) => {
+        e.preventDefault();
+      }, { passive: false });
+    });
   }
   
   // Initialize the game
