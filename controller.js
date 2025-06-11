@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const BOARD_WIDTH = 19;
   const BOARD_HEIGHT = 22;
   const FPS = 10;
+  const PACMAN_SIZE = CELL_SIZE * 1.2;
+  const GHOST_SIZE = CELL_SIZE * 1.2;
   
   // Game variables
   let gameBoard = [];
@@ -126,15 +128,27 @@ document.addEventListener('DOMContentLoaded', () => {
       y: 16,
       direction: 'right',
       nextDirection: 'right',
-      element: document.createElement('div')
+      element: document.createElement('div'),
+      mouthAngle: 45 // Angle for the mouth animation
     };
     
     // Create pacman element
     pacman.element.className = 'cell pacman';
-    pacman.element.style.width = `${CELL_SIZE}px`;
-    pacman.element.style.height = `${CELL_SIZE}px`;
-    pacman.element.style.left = `${pacman.x * CELL_SIZE}px`;
-    pacman.element.style.top = `${pacman.y * CELL_SIZE}px`;
+    pacman.element.style.width = `${PACMAN_SIZE}px`;
+    pacman.element.style.height = `${PACMAN_SIZE}px`;
+    pacman.element.style.left = `${pacman.x * CELL_SIZE - (PACMAN_SIZE - CELL_SIZE) / 2}px`;
+    pacman.element.style.top = `${pacman.y * CELL_SIZE - (PACMAN_SIZE - CELL_SIZE) / 2}px`;
+    
+    // Create pacman's eye
+    const eye = document.createElement('div');
+    eye.style.position = 'absolute';
+    eye.style.width = `${PACMAN_SIZE / 8}px`;
+    eye.style.height = `${PACMAN_SIZE / 8}px`;
+    eye.style.backgroundColor = 'black';
+    eye.style.borderRadius = '50%';
+    eye.style.top = `${PACMAN_SIZE / 4}px`;
+    eye.style.right = `${PACMAN_SIZE / 3}px`;
+    pacman.element.appendChild(eye);
     
     // Add pacman to the game board
     gameBoardElement.appendChild(pacman.element);
@@ -170,10 +184,43 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Create ghost element
       ghost.element.className = `cell ghost ghost-${ghost.color}`;
-      ghost.element.style.width = `${CELL_SIZE}px`;
-      ghost.element.style.height = `${CELL_SIZE}px`;
-      ghost.element.style.left = `${ghost.x * CELL_SIZE}px`;
-      ghost.element.style.top = `${ghost.y * CELL_SIZE}px`;
+      ghost.element.style.width = `${GHOST_SIZE}px`;
+      ghost.element.style.height = `${GHOST_SIZE}px`;
+      ghost.element.style.left = `${ghost.x * CELL_SIZE - (GHOST_SIZE - CELL_SIZE) / 2}px`;
+      ghost.element.style.top = `${ghost.y * CELL_SIZE - (GHOST_SIZE - CELL_SIZE) / 2}px`;
+      
+      // Add eyes to ghost
+      const eyesContainer = document.createElement('div');
+      eyesContainer.style.position = 'absolute';
+      eyesContainer.style.display = 'flex';
+      eyesContainer.style.justifyContent = 'space-around';
+      eyesContainer.style.width = '100%';
+      eyesContainer.style.top = '25%';
+      eyesContainer.style.padding = '0 15%';
+      
+      // Create two eyes
+      for (let j = 0; j < 2; j++) {
+        const eye = document.createElement('div');
+        eye.style.width = `${GHOST_SIZE / 5}px`;
+        eye.style.height = `${GHOST_SIZE / 5}px`;
+        eye.style.backgroundColor = 'white';
+        eye.style.borderRadius = '50%';
+        eye.style.position = 'relative';
+        
+        const pupil = document.createElement('div');
+        pupil.style.width = `${GHOST_SIZE / 10}px`;
+        pupil.style.height = `${GHOST_SIZE / 10}px`;
+        pupil.style.backgroundColor = 'blue';
+        pupil.style.borderRadius = '50%';
+        pupil.style.position = 'absolute';
+        pupil.style.top = '25%';
+        pupil.style.left = '25%';
+        
+        eye.appendChild(pupil);
+        eyesContainer.appendChild(eye);
+      }
+      
+      ghost.element.appendChild(eyesContainer);
       
       // Add ghost to the game board
       gameBoardElement.appendChild(ghost.element);
@@ -185,14 +232,17 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateDisplay()
   {
     // Update pacman position
-    pacman.element.style.left = `${pacman.x * CELL_SIZE}px`;
-    pacman.element.style.top = `${pacman.y * CELL_SIZE}px`;
+    pacman.element.style.left = `${pacman.x * CELL_SIZE - (PACMAN_SIZE - CELL_SIZE) / 2}px`;
+    pacman.element.style.top = `${pacman.y * CELL_SIZE - (PACMAN_SIZE - CELL_SIZE) / 2}px`;
+    
+    // Update pacman mouth based on direction
+    updatePacmanMouth();
     
     // Update ghost positions
     for (const ghost of ghosts)
     {
-      ghost.element.style.left = `${ghost.x * CELL_SIZE}px`;
-      ghost.element.style.top = `${ghost.y * CELL_SIZE}px`;
+      ghost.element.style.left = `${ghost.x * CELL_SIZE - (GHOST_SIZE - CELL_SIZE) / 2}px`;
+      ghost.element.style.top = `${ghost.y * CELL_SIZE - (GHOST_SIZE - CELL_SIZE) / 2}px`;
     }
     
     // Update score
@@ -380,6 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
       movePacman();
       moveGhosts();
       updateDisplay();
+      animatePacmanMouth();
     }, 1000 / FPS);
   }
   
@@ -471,6 +522,55 @@ document.addEventListener('DOMContentLoaded', () => {
     
     event.preventDefault();
   }, { passive: false });
+  
+  // Function to animate Pacman's mouth
+  function animatePacmanMouth()
+  {
+    if (gameState === 'playing')
+    {
+      pacman.mouthAngle += 5;
+      if (pacman.mouthAngle > 45) pacman.mouthAngle = 0;
+      updatePacmanMouth();
+    }
+  }
+  
+  // Update Pacman's mouth based on direction
+  function updatePacmanMouth()
+  {
+    // Clear any existing mouth
+    if (pacman.mouthElement) {
+      pacman.element.removeChild(pacman.mouthElement);
+    }
+    
+    // Create a mouth using a div with a clip-path
+    const mouth = document.createElement('div');
+    mouth.style.position = 'absolute';
+    mouth.style.width = '100%';
+    mouth.style.height = '100%';
+    mouth.style.backgroundColor = 'black';
+    
+    // Set rotation based on direction
+    let rotation = 0;
+    switch (pacman.direction)
+    {
+      case 'up': rotation = -90; break;
+      case 'down': rotation = 90; break;
+      case 'left': rotation = 180; break;
+      case 'right': rotation = 0; break;
+    }
+    
+    // Create a mouth using clip-path
+    const angle = pacman.mouthAngle;
+    mouth.style.clipPath = `polygon(
+      50% 50%, 
+      100% ${50 - angle}%, 
+      100% ${50 + angle}%
+    )`;
+    mouth.style.transform = `rotate(${rotation}deg)`;
+    
+    pacman.element.appendChild(mouth);
+    pacman.mouthElement = mouth;
+  }
   
   // Initialize the game
   initGame();

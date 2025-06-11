@@ -13,3 +13,13 @@ First we see an overlay message "Press space to start". The pacman should be con
 Ideally we also can play it on smartphones (size of maze).
 
 Indent all codes with 2 spaces and put the { on the next line. Put the js code in controller.js and styles in styles.css. Add a hard coded timestamp like ?v=202506111002.
+
+ --
+
+I have moved the game to a new dir cause I published it on github.
+
+Some things to improve:
+
+- the walls of the maze are a little bit too thick
+- the pacman and the ghoste are too small
+- the pacman has no mouth and no eye

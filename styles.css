@@ -29,6 +29,8 @@ body {
 
 .wall {
   background-color: #2121ff;
+  /* Make walls thinner by adding a small inner margin */
+  margin: 1px;
 }
 
 .dot {
@@ -39,10 +41,16 @@ body {
 .pacman {
   background-color: #ffff00;
   border-radius: 50%;
+  /* Make pacman slightly larger */
+  transform: scale(0.9);
+  overflow: hidden;
+  position: absolute;
 }
 
 .ghost {
   border-radius: 50% 50% 0 0;
+  /* Make ghosts slightly larger */
+  transform: scale(0.9);
 }
 
 .ghost-red {
